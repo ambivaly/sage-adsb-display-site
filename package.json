@@ -1,0 +1,25 @@
+{
+  "name": "sage-adsb-display-site",
+  "version": "1.0.0",
+  "description": "Frontend Display for SAGE ADSB data",
+  "main": "app.js",
+  "proxy": "http://localhost:3001",
+  "scripts": {
+    "start": "node server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ajmilton/sage-adsb-display-site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ajmilton/sage-adsb-display-site/issues"
+  },
+  "homepage": "https://github.com/ajmilton/sage-adsb-display-site#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
