@@ -1,0 +1,6 @@
+.circular-map {
+    width: 80vmin;
+    height: 80vmin; /* Set the initial height based on the viewport width */
+    border-radius: 50%;
+    margin: auto; /* Center the map horizontally */
+  }
