@@ -1,6 +1,32 @@
+/*
+Reminders: More specific beats general, and for react-leaflet you pretty much have to be extra specific everywhere.
+Examples can be seen when needing to use .circular-map .leaflet-tooltip-top instead of just generic .leaflet-tooltip-top
+*/
+
 .circular-map {
-    width: 80vmin;
-    height: 80vmin; /* Set the initial height based on the viewport width */
+    width: 85vmin;
+    height: 85vmin;
+    border: 5px solid goldenrod;
     border-radius: 50%;
-    margin: auto; /* Center the map horizontally */
-  }
+    margin: auto;
+}
+
+.circular-map .aircraft-label {
+  color: greenyellow;
+  background: transparent;
+  border: 0px solid transparent;
+}
+
+.circular-map .airport-label {
+  color: greenyellow;
+  background: transparent;
+  border: 0px solid transparent;
+}
+
+.circular-map .leaflet-tooltip-top:before,
+.circular-map .leaflet-tooltip-bottom:before,
+.circular-map .leaflet-tooltip-left:before,
+.circular-map .leaflet-tooltip-right:before {
+    border: 0px;
+    background: transparent;
+}
