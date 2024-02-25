@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { MapContainer, TileLayer, Marker, Popup, Tooltip } from 'react-leaflet';
-import './adsb-map.css'
+import { MapContainer, TileLayer, Marker, Popup, Tooltip} from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet-rotatedmarker'
+import './adsb-map.css';
 
 const AircraftMap = () => {
     const [aircraftData, setAircraftData] = useState([]); // Initialize with an empty array
@@ -10,7 +12,7 @@ const AircraftMap = () => {
     const mapCenter = [mapCenterLat, mapCenterLong];
     const bounds = [[mapCenterLat+0.5, mapCenterLong+0.5],
                     [mapCenterLat+0.5, mapCenterLong-0.5],
-                    [mapCenterLat-0.5, mapCenterLong-0.5]]
+                    [mapCenterLat-0.5, mapCenterLong-0.5]];
 
     const mapRef = useRef();
 
@@ -65,6 +67,15 @@ const AircraftMap = () => {
         }};
     }, [bounds]);
 
+
+    const aircraftIcon = new L.Icon ({
+        iconUrl : './line-icon.png',
+        iconSize : [30,30],
+        iconAnchor : [15,15],
+        popupAnchor : [0, -15],
+        tooltipAnchor: [10, -12]
+      })
+
     return (
     <MapContainer 
         center={mapCenter} 
@@ -94,12 +105,18 @@ const AircraftMap = () => {
         {Array.isArray(aircraftData) && aircraftData.map((aircraft) => {
             if (aircraft.M && aircraft.M.lat && aircraft.M.lon && aircraft.M.hex) {
                 return (
-                <Marker key={aircraft.M.hex.S} position={[aircraft.M.lat.N, aircraft.M.lon.N]}>
+                <Marker key={aircraft.M.hex.S} position={[aircraft.M.lat.N, aircraft.M.lon.N]} icon={aircraftIcon} rotationAngle={aircraft.M.nav_heading?.N || 0}>
 
                     <Popup autoPan={false}>
                         Aircraft ID: {aircraft.M.hex.S}
                         <br />
                         Aircraft Callsign: {aircraft.M.flight?.S || 'N/A'}
+                        <br />
+                        Heading: {aircraft.M.nav_heading?.N || 'N/A'}
+                        <br />
+                        Speed: {aircraft.M.gs?.N || 'N/A'}
+                        <br />
+                        Altitude: {aircraft.M.alt_baro?.N || 'N/A'}
                         <br />
                         Mode 3A: {aircraft.M.squawk?.S || 'N/A'}
                         <br />
