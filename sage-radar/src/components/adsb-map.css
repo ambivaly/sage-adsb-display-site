@@ -9,6 +9,7 @@ Examples can be seen when needing to use .circular-map .leaflet-tooltip-top inst
     border: 5px solid goldenrod;
     border-radius: 50%;
     margin: auto;
+    cursor: url('C:\\Users\\tjm55\\Desktop\\Coding Projects\\Github Repos\\sage-adsb-display-site\\sage-radar\\public\\mouseat.png') 16 16, auto;
 }
 
 .circular-map .aircraft-label {
