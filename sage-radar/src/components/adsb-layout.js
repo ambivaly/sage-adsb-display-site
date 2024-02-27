@@ -10,11 +10,12 @@ const AircraftMapLayout = () => {
     };
 
     return (
-        <div style={{ display: 'flex', height: '100vmin'}}>
-            <div style={{ flex: 1, position: 'relative' }}>
+        <div className= 'app-container'>
+            <div className= 'map-container'>
                 <AircraftMap onSelectAircraft={handleSelectAircraft} />
             </div>
-            <div style={{ flex: 1, paddingLeft: '16px', overflowY: 'auto' }}>
+            <div className='marker-details'>
+                <center><h2 style={{marginBottom:'0'}}>Detail Panel</h2></center>
                 <SelectedAircraftInfo key={selectedAircraft?.M.hex.S} selectedAircraft={selectedAircraft} />
             </div>
         </div>

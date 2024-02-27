@@ -11,9 +11,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
     const mapCenterLong = -122.4857;
     const mapCenter = [mapCenterLat, mapCenterLong];
     const bounds = [
-        [mapCenterLat + 0.5, mapCenterLong + 0.5],
-        [mapCenterLat + 0.5, mapCenterLong - 0.5],
-        [mapCenterLat - 0.5, mapCenterLong - 0.5],
+        [mapCenterLat + 0.7, mapCenterLong + 0.7],
+        [mapCenterLat + 0.7, mapCenterLong - 0.7],
+        [mapCenterLat - 0.7, mapCenterLong - 0.7],
     ];
 
     const mapRef = useRef();
@@ -84,11 +84,10 @@ const AircraftMap = ({ onSelectAircraft }) => {
 
     return (
         <MapContainer
+            key={1}
             center={mapCenter}
-            zoom={9}
             id="circular-map"
             className="circular-map"
-            style={{ height: '85vmin' }}
             ref={mapRef}
             zoomControl={false}
             scrollWheelZoom={false}

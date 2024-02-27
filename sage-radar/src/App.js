@@ -27,7 +27,6 @@ import AircraftMapLayout from './components/adsb-layout';
 const App = () => {
   return (
     <div>
-      <center><h1>SAGE ADS-B Display</h1></center>
       <AircraftMapLayout />
     </div>
   );

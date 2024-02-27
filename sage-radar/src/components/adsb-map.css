@@ -3,21 +3,48 @@ Reminders: More specific beats general, and for react-leaflet you pretty much ha
 Examples can be seen when needing to use .circular-map .leaflet-tooltip-top instead of just generic .leaflet-tooltip-top
 */
 
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+.html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  font-family: "IBM Plex Sans";
+}
+
+.app-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%; /* Set the maximum width as needed */
+  min-width: 480px; /* Set the minimum width as needed */
+  min-height: 0; /* Set a reasonable minimum height for your content */
+  max-height: 100vh; /* Set the maximum height as needed */
+  padding-bottom: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
+  background-image: url("../../public/sage-background.png");
+  background-size: cover;
+  overflow: hidden;
+}
+
+.map-container {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 50%;
+  height: 50%;
+}
+
 .circular-map {
-    width: 85vmin;
-    height: 85vmin;
-    border: 5px solid goldenrod;
-    border-radius: 50%;
-    margin: auto;
-    cursor: url('C:\\Users\\tjm55\\Desktop\\Coding Projects\\Github Repos\\sage-adsb-display-site\\sage-radar\\public\\mouseat.png') 16 16, auto;
+  width: 80%;
+  height: 0;
+  padding-bottom: 80%;
+  border: 0.3vw solid goldenrod;
+  border-radius: 50%;
+  margin: auto;
+  cursor: url('../../public/mouseat.png') 16 16, auto;
 }
 
-.circular-map .aircraft-label {
-  color: greenyellow;
-  background: transparent;
-  border: 0px solid transparent;
-}
-
+.circular-map .aircraft-label,
 .circular-map .airport-label {
   color: greenyellow;
   background: transparent;
@@ -30,4 +57,27 @@ Examples can be seen when needing to use .circular-map .leaflet-tooltip-top inst
 .circular-map .leaflet-tooltip-right:before {
     border: 0px;
     background: transparent;
+}
+
+.marker-details {
+  position: absolute;
+  top: 25%;
+  right: 25%;
+  width: 15%;
+  height: 50%;
+  font-size: 1.1vw;
+  overflow: hidden;
+}
+
+.selected-aircraft-info {
+  font-family: "IBM Plex Sans";
+  font-size: 0.9vw;
+  color: greenyellow;
+  background-color: black;
+  border: 0.3vw solid goldenrod;
+  padding-left: 3%;
+  padding-top: 1%;
+  overflow: hidden;
+  white-space: nowrap;
+  height: 20vw;
 }
