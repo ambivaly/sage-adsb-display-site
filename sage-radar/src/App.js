@@ -21,13 +21,13 @@ function App() {
   );
 }*/
 import React from 'react';
-import AircraftMap from './components/adsb-map';
+//import AircraftMap from './components/adsb-map';
+import AircraftMapLayout from './components/adsb-layout';
 
 const App = () => {
   return (
     <div>
-      <center><h1>SAGE ADS-B Display</h1></center>
-      <AircraftMap />
+      <AircraftMapLayout />
     </div>
   );
 };
