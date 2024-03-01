@@ -113,6 +113,9 @@ dist
 # DynamoDB Local files
 .dynamodb/
 
+# VSCode Remove
+.vscode
+
 # TernJS port file
 .tern-port
 
