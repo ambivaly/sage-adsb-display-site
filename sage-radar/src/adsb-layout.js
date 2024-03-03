@@ -12,11 +12,11 @@ const AircraftMapLayout = () => {
     return (
         <div className= 'app-container'>
             <div className= 'map-container'>
-                <center><h2>Situation Display</h2></center>
+                <div className='display-labels' style={{width: "30%"}}><h2>Situation Display</h2></div>
                 <AircraftMap onSelectAircraft={handleSelectAircraft} />
             </div>
             <div className='marker-details'>
-                <center><h2 style={{/*marginBottom:'0'*/}}>Digital Information Display</h2></center>
+                <div className='display-labels'><h2>Digital Information Display</h2></div>
                 <SelectedAircraftInfo key={selectedAircraft?.M.hex.S} selectedAircraft={selectedAircraft} />
             </div>
         </div>
