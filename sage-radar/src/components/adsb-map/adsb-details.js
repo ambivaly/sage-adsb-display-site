@@ -1,6 +1,4 @@
 import React from 'react';
-//import './adsb-map.css';
-//import './adsb-details.css';
 
 const SelectedAircraftInfo = ({ selectedAircraft }) => {
     return (

@@ -56,8 +56,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
             iconUrl: iconSVGData,
             iconSize: [30, 30],
             iconAnchor: [15, 15],
-            //popupAnchor: [0, -15],
-            //ooltipAnchor: [10, -12],
             className: '',
         });
 

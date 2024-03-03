@@ -29,10 +29,18 @@ body {
   overflow: auto;
 }
 
+.display-labels {
+  margin: auto;
+  text-align: center;
+  color: white;
+  background-color: black;
+  border-radius: 5px;
+}
+
 .map-container {
   position: absolute;
   top: 1.75%;
-  left: 9.63%;
+  left: 13.75%;
   width: 50%;
   height: 50%;
   font-size: 1.05vw;
@@ -67,7 +75,7 @@ body {
 .marker-details {
   position: absolute;
   top: 25.8%;
-  right: 25.15%;
+  right: 20.7%;
   width: 15%;
   height: 50%;
   font-size: 0.7vw;
