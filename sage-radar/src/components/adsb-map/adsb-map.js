@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-rotatedmarker';
 import './adsb-map.css';
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:8000', { transports: ['websocket'] }); // Use your server's address
+
 
 const AircraftMap = ({ onSelectAircraft }) => {
     const [aircraftData, setAircraftData] = useState([]);
@@ -132,36 +135,26 @@ const AircraftMap = ({ onSelectAircraft }) => {
         });
     };
 
-    const fetchData = async () => {
-        try {
-            const response = await axios.get('/aircraft_data.json');
-
-            if (response.data && Array.isArray(response.data) && response.data.length > 0) {
-                const aircraftArray = response.data[0].aircraft?.L || [];
-
-                setAircraftData(aircraftArray);
-            } else {
-                console.error('Invalid ADS-B data structure:', response.data);
-            }
-        } catch (error) {
-            console.error('Error fetching ADS-B data:', error);
-        }
-    };
 
     useEffect(() => {
-        // Initial fetch
-        fetchData();
+        // Listen for initial data from the server
+        socket.on('initialData', (initialData) => {
+            setAircraftData(initialData);
+        },);
 
-        // Set up interval to poll for updates every 6 seconds
-        const intervalId = setInterval(() => {
-            fetchData();
-        }, 6000);
+        // Listen for new data from the server
+        socket.on('newData', (newData) => {
+            const aircraftArray = newData?.aircraft?.L || [];
+            setAircraftData([...aircraftArray]);
+        });
 
-        // Cleanup interval on component unmount
         return () => {
-            clearInterval(intervalId);
+            socket.disconnect();
         };
     }, []);
+
+    useEffect(() => {
+    }, [aircraftData]);
 
     useEffect(() => {
         // Fit bounds at startup
