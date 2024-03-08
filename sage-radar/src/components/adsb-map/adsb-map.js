@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import axios from 'axios';
-import { MapContainer, TileLayer, Marker, Tooltip, /* Popup */ } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet-rotatedmarker';
 import './adsb-map.css';
@@ -74,7 +74,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
                             key={aircraft.M.hex.S}
                             position={[aircraft.M.lat.N, aircraft.M.lon.N]}
                             icon={aircraftMarkerIcon}
-                            rotationAngle={aircraft.M.nav_heading?.N || 0}
+                            rotationAngle={aircraft.M.track?.N || 0}
                             eventHandlers={{ click: () => selectMarker(aircraft) }}
                         >
                             <Tooltip
@@ -104,8 +104,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
             iconUrl: iconSVGData,
             iconSize: [10, 10],
             iconAnchor: [10, 10],
-            //popupAnchor: [0, -15],
-            //ooltipAnchor: [10, -12],
             className: '',
         });
 
@@ -195,7 +193,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
             key={1}
             center={mapCenter}
             id="circular-map"
-            className="circular-map"
+            className="circular-map crt"
             ref={mapRef}
             zoomControl={false}
             scrollWheelZoom={false}
