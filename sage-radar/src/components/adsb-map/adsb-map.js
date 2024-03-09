@@ -5,7 +5,7 @@ import 'leaflet-rotatedmarker';
 import './adsb-map.css';
 import io from 'socket.io-client';
 
-const socket = io('ambivaly.com:8000');
+const socket = io('https://ambivaly.com');
 
 
 const AircraftMap = ({ onSelectAircraft }) => {
@@ -59,7 +59,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
             iconUrl: iconSVGData,
             iconSize: [30, 30],
             iconAnchor: [15, 15],
-            className: '',
+            className: 'aircraft-icon fadeOut',
         });
 
         return aircraftMarkerIcon;
@@ -71,7 +71,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
             aircraftData.map((aircraft) => {
                 if (aircraft.M && aircraft.M.lat && aircraft.M.lon && aircraft.M.hex) {
                     const aircraftMarkerIcon = createAircraftIcon(aircraft);
-    
                     return (
                         <Marker
                             key={aircraft.M.hex.S}
@@ -85,7 +84,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
                                 offset={[0, 0]}
                                 opacity={1}
                                 permanent
-                                className="aircraft-label"
+                                className="aircraft-label fadeOut"
                                 z-index=""
                             >
                                 {aircraft.M.flight?.S || aircraft.M.hex.S}
@@ -108,7 +107,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
             iconUrl: iconSVGData,
             iconSize: [10, 10],
             iconAnchor: [10, 10],
-            className: '',
+            className: 'airport-icon',
         });
 
         return airportMarkerIcon;
@@ -138,7 +137,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
 
 
     useEffect(() => {
-        // Listen for initial data from the server
         socket.on('initialData', (initialData) => {
             setAircraftData(initialData);
         },);
@@ -150,35 +148,38 @@ const AircraftMap = ({ onSelectAircraft }) => {
         });
 
         return () => {
+            // Don't disconnect before making a connection
             if (socket.readyState===1) {
-            socket.disconnect();
+                socket.disconnect();
             }
         };
     }, []);
 
     useEffect(() => {
-    }, [aircraftData]);
-
-    useEffect(() => {
-        // Fit bounds at startup
+        const handleResize = () => {
+          console.log('RESIZE DETECTED');
+          if (mapRef.current) {
+            mapRef.current.invalidateSize();
+            mapRef.current.fitBounds(bounds);
+          }
+        };
+    
+        // Add event listener for window resize
+        window.addEventListener('resize', handleResize);
+    
+        // Initial map setup
         if (mapRef.current) {
-            mapRef.current.whenReady(() => {
-                mapRef.current.fitBounds(bounds);
-            });
-
-            // Add event listener for window resize
-            const handleResize = () => {
-                mapRef.current.fitBounds(bounds);
-            };
-
-            window.addEventListener('resize', handleResize);
-
-            // Cleanup event listener on component unmount
-            return () => {
-                window.removeEventListener('resize', handleResize);
-            };
+          mapRef.current.whenReady(() => {
+            console.log('Map is ready');
+            mapRef.current.fitBounds(bounds);
+          });
         }
-    }, [bounds]);
+    
+        // Cleanup event listener on component unmount
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+      }, [bounds]);
 
     const selectMarker = (aircraft) => {
         onSelectAircraft(aircraft);
@@ -206,6 +207,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
                 url="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
+
+            <div className="scan-line">
+            </div>
 
             {createAirportMarkers()}
             {createAircraftMarkers()}

@@ -19,11 +19,8 @@ body {
 
 .app-container {
   position: relative;
-  max-width: 100vw; /* Set the maximum width as needed */
-  min-width: 100vw; /* Set the minimum width as needed */
-  min-height: 0vh; /* Set a reasonable minimum height for your content */
-  max-height: 100vh; /* Set the maximum height as needed */
-  padding-bottom: 56.25%; /* 16:9 aspect ratio (adjust as needed) */
+  aspect-ratio: 16/9;
+  width: 100vw;
   background-image: url("../../images/sage-background.png");
   background-size: cover;
   overflow: auto;
@@ -41,19 +38,20 @@ body {
   position: absolute;
   top: 1.75%;
   left: 13.75%;
+  aspect-ratio: 1/1;
   width: 50%;
-  height: 50%;
   font-size: 1.05vw;
   z-index: 0;
 }
 
 .circular-map {
+  position: relative;
   width: 80%;
-  height: 0;
-  padding-bottom: 80%;
+  aspect-ratio: 1;
   border: 0.3vw solid goldenrod;
   border-radius: 50%;
   margin: auto;
+  container-type: inline-size;
 }
 
 .circular-map .aircraft-label,
@@ -101,10 +99,43 @@ body {
   cursor: url('../../images/mouseover.png') 0 0, auto;
 }
 
-/*.circular-map .leaflet-layer {
-  opacity: 0.7 !important;
+/*.circular-map .leaflet-marker-pane, .circular-map .leaflet-shadow-pane,
+.leaflet-tooltip-pane*/
+.fadeOut {
+ animation: fadeAnim 6s infinite;
 }
-*/
+
+.circular-map .aircraft-icon {
+  height: 3vw !important;
+  width: 3vw !important;
+}
+
+.circular-map .airport-icon {
+  height: 0.9vw !important;
+  width: 0.9vw !important;
+}
+
+@container (inline-size){
+  .scan-line {
+    position: absolute;
+    width: 100%;
+    height: 1vw;
+    z-index: 10000;
+    background-color: rgba(255, 174, 0, 0.1);
+    animation: scanAnim 10s infinite linear, flicker 0.2s infinite;
+  }
+}
+
+@keyframes scanAnim {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(100cqw); }
+}
+
+@keyframes fadeAnim {
+  0% {opacity: 1;}
+  10% {opacity: 1;}
+  100% {opacity: 0.5;}
+}
 
 /* CRT Code below credit to aleclowns.com */
 
