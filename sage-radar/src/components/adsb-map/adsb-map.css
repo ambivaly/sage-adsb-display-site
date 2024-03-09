@@ -107,7 +107,7 @@ body {
 */
 
 /* CRT Code below credit to aleclowns.com */
-/*
+
 @keyframes flicker {
   0% {
     opacity: 0.27861;
@@ -248,7 +248,7 @@ body {
   right: 0;
   background: rgba(18, 16, 16, 0.1);
   opacity: 0;
-  z-index: 0;
+  z-index: 10000;
   pointer-events: none;
   animation: flicker 0.15s infinite;
 }
@@ -260,8 +260,8 @@ body {
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgb(255, 243, 79) 50%), linear-gradient(90deg, rgba(11, 10, 9, 0.06), rgba(255, 216, 61, 0.02), rgba(255, 229, 101, 0.06));
-  z-index: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0) 50%, rgba(255, 243, 79, 0.295) 50%), linear-gradient(90deg, rgba(11, 10, 9, 0.06), rgba(255, 216, 61, 0.02), rgba(255, 229, 101, 0.06));
+  z-index: 10000;
   background-size: 100% 2px, 3px 100%;
   pointer-events: none;
 }
@@ -269,4 +269,4 @@ body {
   animation: textShadow 1.6s infinite;
   position: relative;
   z-index: 10000;
-} */
+}

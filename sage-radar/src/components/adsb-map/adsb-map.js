@@ -5,7 +5,7 @@ import 'leaflet-rotatedmarker';
 import './adsb-map.css';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8000', { transports: ['websocket'] }); // Use your server's address
+const socket = io('ambivaly.com:8000');
 
 
 const AircraftMap = ({ onSelectAircraft }) => {
@@ -86,6 +86,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
                                 opacity={1}
                                 permanent
                                 className="aircraft-label"
+                                z-index=""
                             >
                                 {aircraft.M.flight?.S || aircraft.M.hex.S}
                             </Tooltip>
@@ -149,7 +150,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
         });
 
         return () => {
+            if (socket.readyState===1) {
             socket.disconnect();
+            }
         };
     }, []);
 
