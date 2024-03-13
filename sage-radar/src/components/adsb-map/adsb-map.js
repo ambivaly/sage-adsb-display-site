@@ -41,6 +41,14 @@ const AircraftMap = ({ onSelectAircraft }) => {
         "Unknown": "%23FFFFFF"
     };
 
+    const airportData = {
+        1: { icao: "KTCM", name: "McChord Field", color: "%231E90FF", lat: 47.1334, long: -122.4859 },
+        2: { icao: "KPLU", name: "Thun Field", color: "%23A0522D", lat: 47.1031, long: -122.2903 },
+        3: { icao: "KSEA", name: "SeaTac Intl", color: "%231E90FF", lat: 47.4484, long: -122.3086 },
+        4: { icao: "KBFI", name: "Boeing Field", color: "%23A0522D", lat: 47.5369, long: -122.3039 },
+        5: { icao: "KRNT", name: "Renton Mncpl", color: "%23A0522D", lat: 47.4919, long: -122.2173 }
+    };
+
     useEffect(() => {
         socket.on('initialData', (initialData) => {
             setAircraftData(initialData);
@@ -115,7 +123,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
                     const rotationAngle = aircraft.M.track?.N || 0;
                     const hex = aircraft.M.hex.S;
 
-                    // Update existing marker's rotation if it exists
                     if (markersRef.current[hex]) {
                         updateMarkerRotation(hex, rotationAngle);
                     }
@@ -149,6 +156,44 @@ const AircraftMap = ({ onSelectAircraft }) => {
         );
     };
 
+    const createAirportIcon = (airport) => {
+
+        const markerColor = (airport?.color || '%23ADFF2F');
+
+        const iconSVGData = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="${markerColor}" viewBox="0 0 20 20"> <rect x="0" y="0" width="100%" height="100%" stroke="black" fill="${markerColor}"/></svg>`;
+
+        const airportMarkerIcon = new L.Icon({
+            iconUrl: iconSVGData,
+            iconSize: [10, 10],
+            iconAnchor: [10, 10],
+            className: 'airport-icon',
+        });
+
+        return airportMarkerIcon;
+    };
+
+    const createAirportMarkers = () => {
+        return Object.values(airportData).map((airport) => {
+            return (
+                <Marker
+                    key={airport.icao}
+                    position={[airport.lat, airport.long]}
+                    icon={createAirportIcon(airport)}
+                >
+                    <Tooltip
+                        direction="right"
+                        offset={[0, 0]}
+                        opacity={1}
+                        permanent
+                        className="airport-label"
+                    >
+                        {airport.icao}
+                    </Tooltip>
+                </Marker>
+            );
+        });
+    };
+
     return (
         <MapContainer
             key={1}
@@ -174,6 +219,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
 
             <div className="scan-line"></div>
 
+            {createAirportMarkers()}
             {createAircraftMarkers()}
         </MapContainer>
     );
