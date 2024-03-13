@@ -7,7 +7,6 @@ import io from 'socket.io-client';
 
 const socket = io('https://ambivaly.com');
 
-
 const AircraftMap = ({ onSelectAircraft }) => {
     const [aircraftData, setAircraftData] = useState([]);
     const mapCenterLat = 47.1342;
@@ -20,6 +19,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
     ], [mapCenterLat, mapCenterLong]);
 
     const mapRef = useRef();
+    const markersRef = useRef({});
 
     const colorAircraftMap = {
         "A1": "%23FFFF00",
@@ -39,15 +39,56 @@ const AircraftMap = ({ onSelectAircraft }) => {
         "C2": "%23A0522D",
         "C3": "%23A0522D",
         "Unknown": "%23FFFFFF"
-    }
+    };
 
-    const aiportData = {
-        1:{icao:"KTCM", name:"McChord Field", color:"%231E90FF", lat:47.1334, long:-122.4859},
-        2:{icao:"KPLU", name:"Thun Field", color:"%23A0522D", lat:47.1031, long:-122.2903},
-        3:{icao:"KSEA", name:"SeaTac Intl", color:"%231E90FF", lat:47.4484, long:-122.3086},
-        4:{icao:"KBFI", name:"Boeing Field", color:"%23A0522D", lat:47.5369, long:-122.3039},
-        5:{icao:"KRNT", name:"Renton Mncpl", color:"%23A0522D", lat:47.4919, long:-122.2173}
-    }
+    useEffect(() => {
+        socket.on('initialData', (initialData) => {
+            setAircraftData(initialData);
+        });
+
+        socket.on('newData', (newData) => {
+            const aircraftArray = newData?.aircraft?.L || [];
+            setAircraftData([...aircraftArray]);
+        });
+
+        return () => {
+            if (socket.readyState === 1) {
+                socket.disconnect();
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (mapRef.current) {
+                mapRef.current.invalidateSize();
+                mapRef.current.fitBounds(bounds);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+
+        if (mapRef.current) {
+            mapRef.current.whenReady(() => {
+                mapRef.current.fitBounds(bounds);
+            });
+        }
+
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, [bounds]);
+
+    const selectMarker = (aircraft) => {
+        onSelectAircraft(aircraft);
+    };
+
+    const updateMarkerRotation = (hex, angle) => {
+        const marker = markersRef.current[hex];
+        if (marker) {
+            marker.setRotationAngle(angle);
+        }
+    };
 
     const createAircraftIcon = (aircraft) => {
         const category = aircraft.M.category?.S || 'Unknown';
@@ -71,13 +112,24 @@ const AircraftMap = ({ onSelectAircraft }) => {
             aircraftData.map((aircraft) => {
                 if (aircraft.M && aircraft.M.lat && aircraft.M.lon && aircraft.M.hex) {
                     const aircraftMarkerIcon = createAircraftIcon(aircraft);
+                    const rotationAngle = aircraft.M.track?.N || 0;
+                    const hex = aircraft.M.hex.S;
+
+                    // Update existing marker's rotation if it exists
+                    if (markersRef.current[hex]) {
+                        updateMarkerRotation(hex, rotationAngle);
+                    }
+
                     return (
                         <Marker
-                            key={aircraft.M.hex.S}
+                            key={hex}
                             position={[aircraft.M.lat.N, aircraft.M.lon.N]}
                             icon={aircraftMarkerIcon}
-                            rotationAngle={aircraft.M.track?.N || 0}
+                            rotationAngle={rotationAngle}
                             eventHandlers={{ click: () => selectMarker(aircraft) }}
+                            ref={(marker) => {
+                                markersRef.current[hex] = marker;
+                            }}
                         >
                             <Tooltip
                                 direction="right"
@@ -87,7 +139,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
                                 className="aircraft-label fadeOut"
                                 z-index=""
                             >
-                                {aircraft.M.flight?.S || aircraft.M.hex.S}
+                                {aircraft.M.flight?.S || hex}
                             </Tooltip>
                         </Marker>
                     );
@@ -95,94 +147,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
                 return null;
             })
         );
-    };
-
-    const createAirportIcon = (airport) => {
-
-        const markerColor = (airport?.color || '%23ADFF2F');      
-
-        const iconSVGData = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="${markerColor}" viewBox="0 0 20 20"> <rect x="0" y="0" width="100%" height="100%" stroke="black" fill="${markerColor}"/></svg>`;
-
-        const airportMarkerIcon = new L.Icon({
-            iconUrl: iconSVGData,
-            iconSize: [10, 10],
-            iconAnchor: [10, 10],
-            className: 'airport-icon',
-        });
-
-        return airportMarkerIcon;
-    };
-
-    const createAirportMarkers = () => {
-        return Object.values(aiportData).map((airport) => {
-            return (
-                <Marker
-                    key={airport.icao}
-                    position={[airport.lat, airport.long]}
-                    icon={createAirportIcon(airport)}
-                >
-                    <Tooltip 
-                        direction="right" 
-                        offset={[0, 0]} 
-                        opacity={1} 
-                        permanent 
-                        className="airport-label"
-                    >
-                        {airport.icao}
-                    </Tooltip>
-                </Marker>
-            );
-        });
-    };
-
-
-    useEffect(() => {
-        socket.on('initialData', (initialData) => {
-            setAircraftData(initialData);
-        },);
-
-        // Listen for new data from the server
-        socket.on('newData', (newData) => {
-            const aircraftArray = newData?.aircraft?.L || [];
-            setAircraftData([...aircraftArray]);
-        });
-
-        return () => {
-            // Don't disconnect before making a connection
-            if (socket.readyState===1) {
-                socket.disconnect();
-            }
-        };
-    }, []);
-
-    useEffect(() => {
-        const handleResize = () => {
-          console.log('RESIZE DETECTED');
-          if (mapRef.current) {
-            mapRef.current.invalidateSize();
-            mapRef.current.fitBounds(bounds);
-          }
-        };
-    
-        // Add event listener for window resize
-        window.addEventListener('resize', handleResize);
-    
-        // Initial map setup
-        if (mapRef.current) {
-          mapRef.current.whenReady(() => {
-            console.log('Map is ready');
-            mapRef.current.fitBounds(bounds);
-          });
-        }
-    
-        // Cleanup event listener on component unmount
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-      }, [bounds]);
-
-    const selectMarker = (aircraft) => {
-        onSelectAircraft(aircraft);
     };
 
     return (
@@ -208,12 +172,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
 
-            <div className="scan-line">
-            </div>
+            <div className="scan-line"></div>
 
-            {createAirportMarkers()}
             {createAircraftMarkers()}
-
         </MapContainer>
     );
 };
