@@ -1,3 +1,4 @@
+// Import necessary libraries and styles
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Tooltip } from 'react-leaflet';
 import L from 'leaflet';
@@ -5,22 +6,34 @@ import 'leaflet-rotatedmarker';
 import './adsb-map.css';
 import io from 'socket.io-client';
 
+// Establish socket connection
 const socket = io('https://ambivaly.com');
 
+// Functional component for rendering the aircraft map
 const AircraftMap = ({ onSelectAircraft }) => {
+
+/*-----------------------------------------------------Constant Setup-----------------------------------------------------*/   
+
+    // State variables
     const [aircraftData, setAircraftData] = useState([]);
+
+    // Initial map center coordinates
     const mapCenterLat = 47.1342;
     const mapCenterLong = -122.4857;
     const mapCenter = [mapCenterLat, mapCenterLong];
+
+    // Define map bounds
     const bounds = useMemo(() => [
         [mapCenterLat + 0.7, mapCenterLong + 0.7],
         [mapCenterLat + 0.7, mapCenterLong - 0.7],
         [mapCenterLat - 0.7, mapCenterLong - 0.7],
     ], [mapCenterLat, mapCenterLong]);
 
+    // Refs for map and markers
     const mapRef = useRef();
     const markersRef = useRef({});
 
+    // Color mapping for different aircraft categories, needs %23 since # doesn't seem to work in react html below
     const colorAircraftMap = {
         "A1": "%23FFFF00",
         "A2": "%23FFA500",
@@ -41,6 +54,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
         "Unknown": "%23FFFFFF"
     };
 
+    // Airport data with their respective details, currently hard-coded
     const airportData = {
         1: { icao: "KTCM", name: "McChord Field", color: "%231E90FF", lat: 47.1334, long: -122.4859 },
         2: { icao: "KPLU", name: "Thun Field", color: "%23A0522D", lat: 47.1031, long: -122.2903 },
@@ -49,6 +63,10 @@ const AircraftMap = ({ onSelectAircraft }) => {
         5: { icao: "KRNT", name: "Renton Mncpl", color: "%23A0522D", lat: 47.4919, long: -122.2173 }
     };
 
+
+/*-----------------------------------------------------Effect Hooks-----------------------------------------------------*/
+
+    // Effect hook for initial data retrieval and socket management
     useEffect(() => {
         socket.on('initialData', (initialData) => {
             setAircraftData(initialData);
@@ -59,6 +77,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
             setAircraftData([...aircraftArray]);
         });
 
+        // Cleanup on unmount
         return () => {
             if (socket.readyState === 1) {
                 socket.disconnect();
@@ -66,6 +85,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
         };
     }, []);
 
+    // Effect hook for resizing and map centering
     useEffect(() => {
         const handleResize = () => {
             if (mapRef.current) {
@@ -82,15 +102,19 @@ const AircraftMap = ({ onSelectAircraft }) => {
             });
         }
 
+        // Cleanup on unmount
         return () => {
             window.removeEventListener('resize', handleResize);
         };
     }, [bounds]);
 
+    // Function to handle marker selection
     const selectMarker = (aircraft) => {
+        // The below gets pushed to the adsb-layout.js as the currently selected aircraft
         onSelectAircraft(aircraft);
     };
 
+    // Function to update marker rotation
     const updateMarkerRotation = (hex, angle) => {
         const marker = markersRef.current[hex];
         if (marker) {
@@ -98,6 +122,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
         }
     };
 
+/*-----------------------------------------------------Aircraft Markers-----------------------------------------------------*/
+
+    // Function to create aircraft marker icon
     const createAircraftIcon = (aircraft) => {
         const category = aircraft.M.category?.S || 'Unknown';
         const markerColor = colorAircraftMap[category] || "%23FFFFFF";
@@ -114,6 +141,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
         return aircraftMarkerIcon;
     };
 
+    // Function to create aircraft markers
     const createAircraftMarkers = () => {
         return (
             Array.isArray(aircraftData) &&
@@ -156,6 +184,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
         );
     };
 
+/*-----------------------------------------------------Airport Markers-----------------------------------------------------*/
+
+    // Function to create airport marker icon
     const createAirportIcon = (airport) => {
 
         const markerColor = (airport?.color || '%23ADFF2F');
@@ -172,6 +203,7 @@ const AircraftMap = ({ onSelectAircraft }) => {
         return airportMarkerIcon;
     };
 
+    // Function to create airport markers
     const createAirportMarkers = () => {
         return Object.values(airportData).map((airport) => {
             return (
@@ -194,6 +226,9 @@ const AircraftMap = ({ onSelectAircraft }) => {
         });
     };
 
+/*-----------------------------------------------------Map Creation/Update-----------------------------------------------------*/
+
+    // Return JSX for rendering the map component
     return (
         <MapContainer
             key={1}
@@ -225,4 +260,5 @@ const AircraftMap = ({ onSelectAircraft }) => {
     );
 };
 
+// Export the AircraftMap component
 export default AircraftMap;

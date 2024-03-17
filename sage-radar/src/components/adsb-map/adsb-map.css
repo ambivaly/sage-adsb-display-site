@@ -3,12 +3,21 @@ Reminders: More specific beats general, and for react-leaflet you pretty much ha
 Examples can be seen when needing to use .circular-map .leaflet-tooltip-top instead of just generic .leaflet-tooltip-top
 */
 
+/*
+Fonts in use are:
+IBM Plex Sans
+
+
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
+/* Set theme to Dark */
 :root {
   color-scheme: dark;
 }
 
+/* Set default cursor, font, and margins */
 .html,
 body {
   margin: 0;
@@ -17,6 +26,7 @@ body {
   cursor: url('../../images/mouseat.png') 0 0, auto;
 }
 
+/* Div that adds a background and contains both the map and the display components */
 .app-container {
   position: relative;
   aspect-ratio: 16/9;
@@ -26,6 +36,7 @@ body {
   overflow: auto;
 }
 
+/* Div Label styles */
 .display-labels {
   margin: auto;
   text-align: center;
@@ -34,6 +45,7 @@ body {
   border-radius: 5px;
 }
 
+/* Parent container for the map and label, controls positioning */
 .map-container {
   position: absolute;
   top: 1.75%;
@@ -44,6 +56,7 @@ body {
   z-index: 0;
 }
 
+/* Main container for the map, makes it a circle with a 1/1 aspect */
 .circular-map {
   position: relative;
   width: 80%;
@@ -54,6 +67,7 @@ body {
   container-type: inline-size;
 }
 
+/* Controls the color/size of the labels */
 .circular-map .aircraft-label,
 .circular-map .airport-label {
   color: greenyellow;
@@ -63,6 +77,7 @@ body {
   font-size: 0.7vw
 }
 
+/* Get rid of the tooltip background chaff */
 .circular-map .leaflet-tooltip-top:before,
 .circular-map .leaflet-tooltip-bottom:before,
 .circular-map .leaflet-tooltip-left:before,
@@ -71,17 +86,19 @@ body {
     background: transparent;
 }
 
+/* Parent container for the aircraft details position with the label */
 .marker-details {
   position: absolute;
   top: 25.8%;
   right: 20.7%;
   width: 15%;
   height: 50%;
-  font-size: 0.7vw;
+  font-size: 0.7vw; /*For some reason, this doesn't seem to work on the facebook browser*/
   color: greenyellow;
   overflow: hidden;
 }
 
+/* Container for the actual aircraft details information */
 .selected-aircraft-info {
   font-family: "IBM Plex Sans";
   font-size: 0.9vw;
@@ -95,26 +112,29 @@ body {
   height: 20vw;
 }
 
+/* Changes mouse cursor on marker hover to be lit up (Very subtle image change, but I love it) */
 .circular-map .leaflet-interactive {
   cursor: url('../../images/mouseover.png') 0 0, auto;
 }
 
-/*.circular-map .leaflet-marker-pane, .circular-map .leaflet-shadow-pane,
-.leaflet-tooltip-pane*/
+/* Add this class to an element to invoke the fade animation */
 .fadeOut {
  animation: fadeAnim 6s infinite;
 }
 
+/* Make the aircraft icons have responsive sizes */
 .circular-map .aircraft-icon {
   height: 3vw !important;
   width: 3vw !important;
 }
 
+/* Make the airport icons have responsive sizes */
 .circular-map .airport-icon {
   height: 0.9vw !important;
   width: 0.9vw !important;
 }
 
+/* Style for the line that scans down the map */
 @container (inline-size){
   .scan-line {
     position: absolute;
@@ -126,19 +146,27 @@ body {
   }
 }
 
+/* 
+Make the line go from the top to the bottom of the map 
+Uses cqw(component width) because the map has no fixed height 
+The height will always be equal to the width in my case, which is why this works
+ */
 @keyframes scanAnim {
   0% { transform: translateY(0); }
   100% { transform: translateY(100cqw); }
 }
 
+/* Fade out the markers with this animation, has a slight delay */
 @keyframes fadeAnim {
   0% {opacity: 1;}
   10% {opacity: 1;}
   100% {opacity: 0.5;}
 }
 
-/* CRT Code below credit to aleclowns.com */
-
+/* 
+  CRT Code below credit to aleclowns.com, causes a nice flicker and text shadow effect
+  Adjusted the colors a bit to align with the view I was going for
+ */
 @keyframes flicker {
   0% {
     opacity: 0.27861;

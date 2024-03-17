@@ -1,5 +1,11 @@
 import React from 'react';
 
+
+/* This component displays the selected Aircrafts ADS-B data in a seperate div from the Leaflet map
+ * If no aircraft is selected, it displays a message.
+ * If an aircraft is selected, it displays the aircraft's ADS-B data. */
+
+// Array associating the Category codes with their definitions
 const categoryAircraftMap = {
     "A1": "Light",
     "A2": "Small",
@@ -8,7 +14,7 @@ const categoryAircraftMap = {
     "A5": "Heavy",
     "A6": "High Performance",
     "A7": "Rotorcraft",
-    "B1": "Glider/Sailplane",
+    "B1": "Glider/Light Sport",
     "B2": "Lighter-than-Air",
     "B3": "Parachutist/Skydiver",
     "B4": "Ultralight/Hang-Glider",
@@ -21,6 +27,9 @@ const categoryAircraftMap = {
 }
 
 
+// Function to generate the component. 
+// If no aircraft is selected, it displays a message. 
+// If an aircraft is selected, it displays the aircraft's ADS-B data.
 const SelectedAircraftInfo = ({ selectedAircraft }) => {
     if (!selectedAircraft || !selectedAircraft.M) {
         return (
@@ -30,7 +39,7 @@ const SelectedAircraftInfo = ({ selectedAircraft }) => {
         );
     }
     const category = selectedAircraft.M.category?.S || 'Unknown';
-    const catDesc = categoryAircraftMap[category]
+    const catDesc = categoryAircraftMap[category] // Translate the category into the description text for display
     return (
         <div className="selected-aircraft-info crt">
             {(
