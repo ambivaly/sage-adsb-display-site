@@ -39,7 +39,7 @@ NPM:
 '''npm start'''
 
 
-### Open your web browser and navigate to http://localhost:3000 to view the application.
+### Open your web browser and navigate to localhost:3000 to view the application.
 
 ## Usage
 Upon launching the application, you should see a Leaflet map displaying aircraft markers.
