@@ -21,22 +21,22 @@ This project consists of several components:
 ### To run this project locally, follow these steps:
 
 Clone the repository:
-'''git clone <repository_url>'''
+```git clone https://github.com/ambivaly/sage-adsb-display-site.git```
 
 Navigate to the project directory:
-'''cd <project_directory>'''
+```cd <project_directory>```
 
 Navigate to the sage-radar sub-direcotry:
-'''cd sage-radar'''
+```cd sage-radar```
 
 ### Install dependencies using npm:
 NPM:
-'''npm install'''
+```npm install```
 
 
 ### Start the development server:
 NPM:
-'''npm start'''
+```npm start```
 
 
 ### Open your web browser and navigate to localhost:3000 to view the application.
@@ -56,4 +56,4 @@ _Note: May take a few seconds before the data is pulled from the server for the 
 - Node.js: Javascript library used to run the back-end server, code not packaged here.
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the GPL 3.0 License.
