@@ -5,6 +5,7 @@ import L from 'leaflet';
 import 'leaflet-rotatedmarker';
 import './adsb-map.css';
 import io from 'socket.io-client';
+import { colorAircraftMap, airportData, aircraftSVGCreation} from './static.js';
 
 // Establish socket connection
 const socket = io('https://ambivaly.com');
@@ -32,36 +33,6 @@ const AircraftMap = ({ onSelectAircraft }) => {
     // Refs for map and markers
     const mapRef = useRef();
     const markersRef = useRef({});
-
-    // Color mapping for different aircraft categories, needs %23 since # doesn't seem to work in react html below
-    const colorAircraftMap = {
-        "A1": "%23FFFF00",
-        "A2": "%23FFA500",
-        "A3": "%23ADFF2F",
-        "A4": "%23ADFF2F",
-        "A5": "%23ADFF2F",
-        "A6": "%231E90FF",
-        "A7": "%238A2BE2",
-        "B1": "%23FF0000",
-        "B2": "%23FF0000",
-        "B3": "%23FF0000",
-        "B4": "%23FF0000",
-        "B6": "%23FF0000",
-        "B7": "%23FF0000",
-        "C1": "%23A0522D",
-        "C2": "%23A0522D",
-        "C3": "%23A0522D",
-        "Unknown": "%23FFFFFF"
-    };
-
-    // Airport data with their respective details, currently hard-coded
-    const airportData = {
-        1: { icao: "KTCM", name: "McChord Field", color: "%231E90FF", lat: 47.1334, long: -122.4859 },
-        2: { icao: "KPLU", name: "Thun Field", color: "%23A0522D", lat: 47.1031, long: -122.2903 },
-        3: { icao: "KSEA", name: "SeaTac Intl", color: "%231E90FF", lat: 47.4484, long: -122.3086 },
-        4: { icao: "KBFI", name: "Boeing Field", color: "%23A0522D", lat: 47.5369, long: -122.3039 },
-        5: { icao: "KRNT", name: "Renton Mncpl", color: "%23A0522D", lat: 47.4919, long: -122.2173 }
-    };
 
 
 /*-----------------------------------------------------Effect Hooks-----------------------------------------------------*/
@@ -127,9 +98,23 @@ const AircraftMap = ({ onSelectAircraft }) => {
     // Function to create aircraft marker icon
     const createAircraftIcon = (aircraft) => {
         const category = aircraft.M.category?.S || 'Unknown';
-        const markerColor = colorAircraftMap[category] || "%23FFFFFF";
+        const markerColor = colorAircraftMap[category] || "#FFFFFF";
 
-        const iconSVGData = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="${markerColor}" viewBox="0 0 16 16"> <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5"/></svg>`;
+        /*const iconSVGData = `data:image/svg+xml;base64,${btoa(`
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 490.941 490.941" xml:space="preserve">
+        <path fill="${markerColor}" d="M477.8,293.387l-75.9-75.9c9.8-13.4,32.4-49.7,1.9-100.4l12.5-12.5l29.2,29.2c12.2,11.7,25,4.2,29.2,0
+            c8.3-8.3,8.3-20.9,0-29.2l-88.6-88.6c-8.3-8.3-20.9-8.3-29.2,0c-8.3,8.3-8.3,20.9,0,29.2l30.1,30.2l-13,12.6
+            c-15.7-9.6-55.4-26-99.2,3.5l-77.5-77.5c-18.8-18.8-49-17.7-67.8,1l-21.9,21.9c-26.3,31.4-10.4,58.4-1,67.8l86.2,86.2l-67.7,86.5
+            l-18.5-18.5c-47.8-41-88.6,3.1-88.6,3.1c-24,24-24,62.6,0,86.5l125.1,124.1c39.1,33.7,72.1,12.4,87.6-3.1c23.9-24.1,24-62.6,0-86.5
+            l-15.4-15.4l86.6-67.7l84.1,84.1c8.3,9.4,36.1,25.7,67.8-1l22.9-21.9C495.5,341.287,495.5,311.087,477.8,293.387z M134.8,76.487
+            c-1-2.1-2.4-5.8,2.1-10.4l21.9-21.9c3.1-2.1,7.3-3.1,9.4-1l78.7,78.7l-29.3,37.4L134.8,76.487z M203.6,440.387
+            c0,0-13.8,16.8-32.3,3.1l-124.1-124.1c-15.9-17.3,3.1-31.3,3.1-31.3c13.8-11.5,25-4.2,28.1-1l125.1,124.1
+            C214.7,422.787,207.8,436.187,203.6,440.387z M153.7,305.987l135.4-173.2c28.6-32.2,61.5-13.6,71.9-3.1s28.7,42.3-3.1,71.9
+            l-173.2,135.5L153.7,305.987z M447.6,330.887l-21.9,21.9c-3.6,4.5-9.4,3.1-10.4,2.1l-80.5-80.5l36.9-28.9l77,76.1
+            C450.7,323.587,450.7,327.787,447.6,330.887z"/>
+    </svg>
+`)}`;*/
+        const iconSVGData = aircraftSVGCreation(aircraft);
 
         const aircraftMarkerIcon = new L.Icon({
             iconUrl: iconSVGData,
@@ -191,7 +176,10 @@ const AircraftMap = ({ onSelectAircraft }) => {
 
         const markerColor = (airport?.color || '%23ADFF2F');
 
-        const iconSVGData = `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="${markerColor}" viewBox="0 0 20 20"> <rect x="0" y="0" width="100%" height="100%" stroke="black" fill="${markerColor}"/></svg>`;
+        const iconSVGData = `data:image/svg+xml;base64,${btoa(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="${markerColor}" viewBox="0 0 20 20"> <rect x="0" y="0" width="100%" height="100%" stroke="black" fill="${markerColor}"/>
+        </svg>
+        `)}`;
 
         const airportMarkerIcon = new L.Icon({
             iconUrl: iconSVGData,
