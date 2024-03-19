@@ -24,11 +24,12 @@
 
     // Airport data with their respective details, currently hard-coded
     const airportData = {
-        1: { icao: "KTCM", name: "McChord Field", color: "#1E90FF", lat: 47.1334, long: -122.4859 },
-        2: { icao: "KPLU", name: "Thun Field", color: "#A0522D", lat: 47.1031, long: -122.2903 },
-        3: { icao: "KSEA", name: "SeaTac Intl", color: "#1E90FF", lat: 47.4484, long: -122.3086 },
-        4: { icao: "KBFI", name: "Boeing Field", color: "#A0522D", lat: 47.5369, long: -122.3039 },
-        5: { icao: "KRNT", name: "Renton Mncpl", color: "#A0522D", lat: 47.4919, long: -122.2173 }
+        1: { icao: "KTCM", name: "McChord Field", color: "#1E90FF", lat: 47.1334, long: -122.4859, true_angle: 180 },
+        2: { icao: "KPLU", name: "Thun Field", color: "#A0522D", lat: 47.1031, long: -122.2903, true_angle: 180 },
+        3: { icao: "KSEA", name: "SeaTac Intl", color: "#1E90FF", lat: 47.4484, long: -122.3086, true_angle: 180 },
+        4: { icao: "KBFI", name: "Boeing Field", color: "#A0522D", lat: 47.5369, long: -122.3039, true_angle: 150 },
+        5: { icao: "KRNT", name: "Renton Mncpl", color: "#A0522D", lat: 47.4919, long: -122.2173, true_angle: 174 },
+        6: { icao: "KTIW", name: "Tacoma Narrows", color: "#A0522D", lat: 47.2678, long: -122.5774, true_angle: 187 }
     };
 
 
@@ -112,7 +113,7 @@
             `)}`,
             "A7":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" xml:space="preserve">
-                <g transform="matrix(1,0,0,-1,0,64) rotate(180, 32, 32)">
+                <g transform="matrix(1,0,0,-1,0,64) rotate(180, 32, 32) scale(0.8)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 27.5,17.2 0,-0.2 -0.1,-0.3 0.2,-0.3 0,-0.5 0.1,-0.6 -0.4,-0.1 -0.2,-0.3 0.3,-1.1 0.2,0.1 -0.1,0.5 0.4,0.1 0.3,-0.7 0.5,-0.9 0.8,-0.7 0.9,-0.4 1,-0.1 1,0.1 0.9,
                     0.4 0.8,0.7 0.5,0.9 0.3,0.7 0.4,-0.1 -0.1,-0.5 0.2,-0.1 0.3,1.1 -0.2,0.3 -0.4,0.1 0.1,0.6 0,0.5 0.2,0.3 -0.1,0.3 0,0.2 0.2,0.6 0,0.7 0.1,1 0.2,0 0,-1.2 0.1,-0.6 0.2,0 0.1,
@@ -191,6 +192,21 @@
         return iconSVGData["Unknown"];
     };
 
+        //Below is the old code for the arrow icons pulled from the adsb-map.js file. Saved in case I need it again.
+            /*const iconSVGData = `data:image/svg+xml;base64,${btoa(`
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 490.941 490.941" xml:space="preserve">
+                    <path fill="${markerColor}" d="M477.8,293.387l-75.9-75.9c9.8-13.4,32.4-49.7,1.9-100.4l12.5-12.5l29.2,29.2c12.2,11.7,25,4.2,29.2,0
+                        c8.3-8.3,8.3-20.9,0-29.2l-88.6-88.6c-8.3-8.3-20.9-8.3-29.2,0c-8.3,8.3-8.3,20.9,0,29.2l30.1,30.2l-13,12.6
+                        c-15.7-9.6-55.4-26-99.2,3.5l-77.5-77.5c-18.8-18.8-49-17.7-67.8,1l-21.9,21.9c-26.3,31.4-10.4,58.4-1,67.8l86.2,86.2l-67.7,86.5
+                        l-18.5-18.5c-47.8-41-88.6,3.1-88.6,3.1c-24,24-24,62.6,0,86.5l125.1,124.1c39.1,33.7,72.1,12.4,87.6-3.1c23.9-24.1,24-62.6,0-86.5
+                        l-15.4-15.4l86.6-67.7l84.1,84.1c8.3,9.4,36.1,25.7,67.8-1l22.9-21.9C495.5,341.287,495.5,311.087,477.8,293.387z M134.8,76.487
+                        c-1-2.1-2.4-5.8,2.1-10.4l21.9-21.9c3.1-2.1,7.3-3.1,9.4-1l78.7,78.7l-29.3,37.4L134.8,76.487z M203.6,440.387
+                        c0,0-13.8,16.8-32.3,3.1l-124.1-124.1c-15.9-17.3,3.1-31.3,3.1-31.3c13.8-11.5,25-4.2,28.1-1l125.1,124.1
+                        C214.7,422.787,207.8,436.187,203.6,440.387z M153.7,305.987l135.4-173.2c28.6-32.2,61.5-13.6,71.9-3.1s28.7,42.3-3.1,71.9
+                        l-173.2,135.5L153.7,305.987z M447.6,330.887l-21.9,21.9c-3.6,4.5-9.4,3.1-10.4,2.1l-80.5-80.5l36.9-28.9l77,76.1
+                        C450.7,323.587,450.7,327.787,447.6,330.887z"/>
+                </svg>
+            `)}`;*/
     
 
 export { colorAircraftMap, airportData, aircraftSVGCreation };
