@@ -77,6 +77,11 @@ body {
   font-size: 0.7vw
 }
 
+/* Overwrites aiport label color */
+.circular-map .airport-label {
+  color:burlywood;
+}
+
 /* Get rid of the tooltip background chaff */
 .circular-map .leaflet-tooltip-top:before,
 .circular-map .leaflet-tooltip-bottom:before,
@@ -130,8 +135,8 @@ body {
 
 /* Make the airport icons have responsive sizes */
 .circular-map .airport-icon {
-  height: 0.9vw !important;
-  width: 0.9vw !important;
+  height: 1.2vw !important;
+  width: 1.2vw !important;
 }
 
 /* Style for the line that scans down the map */
