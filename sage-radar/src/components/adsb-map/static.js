@@ -1,5 +1,26 @@
  /*-----------------Static Arrays--------------------*/   
     
+    // Array associating the Category codes with their definitions
+    const categoryAircraftMap = {
+        "A1": "Light",
+        "A2": "Small",
+        "A3": "Large",
+        "A4": "High Vortex Large",
+        "A5": "Heavy",
+        "A6": "High Performance",
+        "A7": "Rotorcraft",
+        "B1": "Glider/Light Sport",
+        "B2": "Lighter-than-Air",
+        "B3": "Parachutist/Skydiver",
+        "B4": "Ultralight/Hang-Glider",
+        "B6": "UAV",
+        "B7": "Space",
+        "C1": "Surface Emergency",
+        "C2": "Surface Service",
+        "C3": "Surface Obstruction",
+        "Unknown": "Unknown"
+    }
+
     // Color mapping for different aircraft categories
     const colorAircraftMap = {
         "A1": "#FFFF00",
@@ -189,7 +210,7 @@
         if(category in iconSVGData){
             return iconSVGData[category];
         }
-        return iconSVGData["Unknown"];
+        return iconSVGData["A1"];
     };
 
         //Below is the old code for the arrow icons pulled from the adsb-map.js file. Saved in case I need it again.
@@ -209,4 +230,4 @@
             `)}`;*/
     
 
-export { colorAircraftMap, airportData, aircraftSVGCreation };
+export { colorAircraftMap, airportData, aircraftSVGCreation , categoryAircraftMap};
