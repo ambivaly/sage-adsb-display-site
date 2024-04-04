@@ -64,7 +64,7 @@
         const iconSVGData = {
             "A1":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" xml:space="preserve">
-                <g transform="scale(0.8) transform(6.4,6.4)">
+                <g transform="scale(0.6) translate(19.2,19.2)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 32,10.2 0.4,0.7 0.2,0.6 4.7,0 0,0.2 -4.6,0.1 0.1,0.4 0.7,0 0.6,0.2 0.3,0.4 0.2,0.7 0.3,3.5 0.1,3 11.3,0 15.6,0.7 0.6,0.4 0.3,0.8 0,5.5 
                     -17.5,2.5 -10.6,0 -1.8,14.1 8,1.2 0.4,0.5 0.2,1.1 0,1.2 -0.2,0.9 -0.4,0.7 -7.3,1.1 -1.3,-2.5 -0.1,5.6 -0.2,0.1 -0.2,-0.1 -0.1,-5.6 -1.3,2.5 -7.3,-1.1 
@@ -125,7 +125,7 @@
             `)}`,
             "A6":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 128 128" xml:space="preserve">
-                <g transform="scale(0.7) transform(19.2,19.2)">
+                <g transform="scale(0.6) translate(38.4,38.4)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 63,0 5,13 2,20 1,12 6,0 1,10 32,42 -3,10 -33,-24 0,8 20,23 0,6 -21,-4 -2,4 -6,0 -2,7 -2,-7 -7,0 -2,-4 -20,4 -1,-6 L 51,91 51.368655,83.126269 19,107 16,
                     96 47,55 l 1,-9 7,0 1,-18 2,-15 z" stroke="${markerColor}" stroke-width="1" fill="${markerColor}" fill-opacity="0.3"/>
@@ -134,7 +134,7 @@
             `)}`,
             "A7":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" xml:space="preserve">
-                <g transform="scale(0.8)">
+                <g transform="scale(0.75) translate(12,12)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 27.5,17.2 0,-0.2 -0.1,-0.3 0.2,-0.3 0,-0.5 0.1,-0.6 -0.4,-0.1 -0.2,-0.3 0.3,-1.1 0.2,0.1 -0.1,0.5 0.4,0.1 0.3,-0.7 0.5,-0.9 0.8,-0.7 0.9,-0.4 1,-0.1 1,0.1 0.9,
                     0.4 0.8,0.7 0.5,0.9 0.3,0.7 0.4,-0.1 -0.1,-0.5 0.2,-0.1 0.3,1.1 -0.2,0.3 -0.4,0.1 0.1,0.6 0,0.5 0.2,0.3 -0.1,0.3 0,0.2 0.2,0.6 0,0.7 0.1,1 0.2,0 0,-1.2 0.1,-0.6 0.2,0 0.1,
@@ -152,7 +152,7 @@
         `   )}`,
             "B1":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" xml:space="preserve">
-                <g transform="scale(1)">
+                <g transform="scale(0.75) translate(12,12)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 31,1 1,0 1,2 1,4 1,6 0,3 16.5,0 11,2 1,2 -21,2 -8,0 -1,5 -1,15 0,4 4,0 5,1 0.5,1 0,1 -11,0 0.5,2 0.5,-2 -11,0 0.5,-1 0,-1 5,-1 4,0 0,-4 -1,-15 -1,-5 -8,0 -21,-2 1,-2 11,
                     -2 16.5,0 0,-3 1,-6 1,-4 1,-2 z" 
@@ -162,7 +162,7 @@
             `)}`,
             "B2":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" xml:space="preserve">
-                <g transform="scale(1)">
+                <g transform="scale(0.75) translate(12,12)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 27,1 10,0 3,1 3,1 1,1 2,1 6,6 1,2 1,1 1,3 1,3 0,10 -1,3 -1,3 -1,1 -1,2 -6,6 -2,1 -1,1 -2,1 -2,1 -2,8 -1,0 2,-8 -3,1 -6,0 -3,-1 2,8 9,0 0,6 
                     -10,0 0,-6 -2,-8 -2,-1 -2,-1 -1,-1 -2,-1 -6,-6 -1,-2 -1,-1 -1,-3 -1,-3 0,-10 1,-3 1,-3 1,-1 1,-2 6,-6 2,-1 1,-1 3,-1 3,-1z" 
@@ -208,7 +208,8 @@
         };
 
         if(category in iconSVGData){
-            return iconSVGData[category];
+            return iconSVGData['A7'];
+            //return iconSVGData[category];
         }
         return iconSVGData["A1"];
     };
