@@ -23,8 +23,8 @@
 
     // Color mapping for different aircraft categories
     const colorAircraftMap = {
-        "A1": "#FFFF00",
-        "A2": "#FFA500",
+        "A1": "#FFA500",
+        "A2": "#FFFF00",
         "A3": "#ADFF2F",
         "A4": "#ADFF2F",
         "A5": "#ADFF2F",
@@ -75,7 +75,7 @@
             `)}`,
             "A2":`data:image/svg+xml;base64,${btoa(`
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 64 64" xml:space="preserve">
-                <g transform="scale(1)">
+                <g transform="scale(0.9) translate(3,7)">
                 v2.0 14 November 2016 - Peter Lowden - peter@lowden.nz
                 <path d="m 32,1 1,0 1,2 1,4 0,10 21,17 0,5 -2,-2 -16,-8 -3,0 0,3 2,0 1,1 0,5 -1,1 0,3 -2,0 0,1 7,5 0,3 -9,-3 -1,0 -9,3 0,-3 7,-5 0,-1 -2,0 0,-3 -1,-1 0,
                     -5 1,-1 2,0 0,-3 -3,0 -16,8 -2,2 0,-5 21,-17 0,-10 1,-4 1,-2z" stroke="${markerColor}" stroke-width="1" fill="${markerColor}" fill-opacity="0.3"/>
