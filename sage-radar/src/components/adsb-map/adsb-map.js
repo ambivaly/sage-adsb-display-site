@@ -5,7 +5,7 @@ import L from 'leaflet';
 import 'leaflet-rotatedmarker';
 import './adsb-map.css';
 import io from 'socket.io-client';
-import { airportData, aircraftSVGCreation} from './static.js';
+import { airportData, aircraftSVGCreation } from './static.js';
 
 // Establish socket connection
 const socket = io('https://ambivaly.com');
@@ -98,11 +98,10 @@ const AircraftMap = ({ onSelectAircraft }) => {
     // Function to create aircraft marker icon
     const createAircraftIcon = (aircraft) => {
         const iconSVGData = aircraftSVGCreation(aircraft);
-
         const aircraftMarkerIcon = new L.Icon({
             iconUrl: iconSVGData,
-            iconSize: [30, 30],
-            iconAnchor: [15, 15],
+            iconSize: [30,30],
+            iconAnchor: [15,15],
             className: 'aircraft-icon fadeOut',
         });
 
