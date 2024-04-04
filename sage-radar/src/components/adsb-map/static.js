@@ -208,8 +208,7 @@
         };
 
         if(category in iconSVGData){
-            return iconSVGData['A7'];
-            //return iconSVGData[category];
+            return iconSVGData[category];
         }
         return iconSVGData["A1"];
     };
